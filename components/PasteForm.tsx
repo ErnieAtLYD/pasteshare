@@ -1,17 +1,63 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
+import { Paste } from '../app/types/paste'
 
 export function PasteForm() {
   const [content, setContent] = useState('')
   const [language, setLanguage] = useState('plaintext')
   const [expiration, setExpiration] = useState('never')
   const [isPublic, setIsPublic] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    // TODO: Implement paste creation logic
-    console.log({ content, language, expiration, isPublic })
+    setError(null)
+
+    if (content.trim().length === 0) {
+      setError('Paste content cannot be empty')
+      return
+    }
+
+    const newPaste: Omit<Paste, 'id' | 'createdAt'> = {
+      content,
+      language,
+      expiresAt: calculateExpirationTime(expiration),
+      isPublic
+    }
+
+    try {
+      // TODO: Replace with actual API call
+      console.log('Submitting paste:', newPaste)
+      // const response = await fetch('/api/pastes', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(newPaste)
+      // })
+      // if (!response.ok) throw new Error('Failed to create paste')
+      // const data = await response.json()
+      // console.log('Paste created:', data)
+
+      // Clear form after successful submission
+      setContent('')
+      setLanguage('plaintext')
+      setExpiration('never')
+      setIsPublic(true)
+    } catch (err) {
+      setError('Failed to create paste. Please try again.')
+      console.error(err)
+    }
+  }
+
+  const calculateExpirationTime = (expiration: string): number | null => {
+    if (expiration === 'never') return null
+    const now = Date.now()
+    switch (expiration) {
+      case '1h': return now + 60 * 60 * 1000
+      case '1d': return now + 24 * 60 * 60 * 1000
+      case '1w': return now + 7 * 24 * 60 * 60 * 1000
+      default: return null
+    }
   }
 
   return (
@@ -34,7 +80,8 @@ export function PasteForm() {
           <option value="plaintext">Plain Text</option>
           <option value="javascript">JavaScript</option>
           <option value="python">Python</option>
-          {/* Add more language options as needed */}
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
         </select>
       </div>
       <div>
@@ -60,6 +107,7 @@ export function PasteForm() {
           Make this paste public
         </label>
       </div>
+      {error && <div className="text-red-500">{error}</div>}
       <button
         type="submit"
         className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
