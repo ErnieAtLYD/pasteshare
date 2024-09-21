@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { kv } from '@vercel/kv';
 import { Paste } from '../../../types/paste';
 
-const pastes: Paste[] = []; // This should be shared or managed in a more persistent way
-
 export async function GET(req: NextRequest) {
-  const sortedPastes = [...pastes].sort((a, b) => b.createdAt - a.createdAt);
-  return NextResponse.json(sortedPastes);
+  const limit = 10; // Set the limit for the number of pastes to retrieve
+  const pastes = await kv.scan({ prefix: 'paste-', limit });
+
+  // Sort pastes by createdAt in descending order
+  pastes.sort((a, b) => b.createdAt - a.createdAt);
+
+  return NextResponse.json(pastes);
 }
