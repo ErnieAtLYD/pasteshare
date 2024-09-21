@@ -10,11 +10,13 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const newPaste: Omit<Paste, 'id' | 'createdAt' | 'expiresAt'> = await req.json();
 
+  const expiresAt = newPaste.expiresAt ? new Date(newPaste.expiresAt).getTime() : null;
+
   const createdPaste: Paste = {
     ...newPaste,
     id: `paste-${pastes.length + 1}`,
     createdAt: Date.now(),
-    expiresAt: newPaste.expiresAt || null, // Set expiresAt if provided
+    expiresAt, // Set expiresAt if provided
   };
 
   pastes.push(createdPaste);

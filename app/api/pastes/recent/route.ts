@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const pastes = await kv.scan({ prefix: 'paste-', limit });
 
   // Sort pastes by createdAt in descending order
-  pastes.sort((a, b) => b.createdAt - a.createdAt);
+  const sortedPastes = pastes.sort((a, b) => b.createdAt - a.createdAt);
 
-  return NextResponse.json(pastes);
+  return NextResponse.json(sortedPastes);
 }
