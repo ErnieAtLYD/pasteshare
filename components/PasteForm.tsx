@@ -73,7 +73,7 @@ export function PasteForm() {
       </div>
       <div>
         <select
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded bg-white text-gray-800"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
         >
@@ -86,7 +86,7 @@ export function PasteForm() {
       </div>
       <div>
         <select
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded bg-white text-gray-800"
           value={expiration}
           onChange={(e) => setExpiration(e.target.value)}
         >
