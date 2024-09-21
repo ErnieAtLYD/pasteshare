@@ -5,7 +5,7 @@ const pastes: Paste[] = []; // This should be shared or managed in a more persis
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const id = searchParams.get('id');
+  const id = req.nextUrl.pathname.split('/').pop();
 
   if (!id) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
