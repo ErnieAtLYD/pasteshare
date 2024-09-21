@@ -17,5 +17,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Paste not found' }, { status: 404 });
   }
 
+  const key = searchParams.get('key');
+
+  if (key && key in paste) {
+    return NextResponse.json({ [key]: paste[key] });
+  }
+
   return NextResponse.json(paste);
 }
