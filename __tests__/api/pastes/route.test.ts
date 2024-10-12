@@ -1,5 +1,17 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { GET, POST } from '../../../app/api/pastes/route';
+
+jest.mock('next/server', () => ({
+  NextRequest: jest.fn().mockImplementation(() => ({
+    json: jest.fn().mockResolvedValue({}),
+  })),
+  NextResponse: {
+    json: jest.fn((data) => ({
+      status: 200,
+      json: async () => data,
+    })),
+  },
+}));
 
 describe('API /api/pastes', () => {
   it('should return an empty array initially with GET', async () => {
