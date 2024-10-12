@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GET, POST } from '../../../app/api/pastes/route';
 
 jest.mock('next/server', () => ({
-  NextRequest: jest.fn().mockImplementation((url, options) => ({
-    json: jest.fn().mockResolvedValue(JSON.parse(options.body)),
+  NextRequest: jest.fn().mockImplementation((url, options = {}) => ({
+    json: jest.fn().mockResolvedValue(options.body ? JSON.parse(options.body) : {}),
   })),
   NextResponse: {
     json: jest.fn((data, { status } = { status: 200 }) => ({
