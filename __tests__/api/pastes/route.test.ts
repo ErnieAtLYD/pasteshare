@@ -6,8 +6,8 @@ jest.mock('next/server', () => ({
     json: jest.fn().mockResolvedValue({}),
   })),
   NextResponse: {
-    json: jest.fn((data) => ({
-      status: 200,
+    json: jest.fn((data, { status } = { status: 200 }) => ({
+      status,
       json: async () => data,
     })),
   },
