@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   const key = searchParams.get('key');
 
   if (key && key in paste) {
-    return NextResponse.json({ [key]: paste[key] });
+    return NextResponse.json({ [key]: paste[key as keyof Paste] });
   }
 
   return NextResponse.json(paste);
