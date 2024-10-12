@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { GET, POST } from '../../../app/api/pastes/route';
+import { GET, POST } from '../../../src/app/api/pastes/route';
 
 jest.mock('next/server', () => ({
   NextRequest: jest.fn().mockImplementation((url, options = {}) => ({

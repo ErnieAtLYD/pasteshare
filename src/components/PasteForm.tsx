@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
-import { Paste } from '../app/types/paste'
+import { Paste } from '../src/app/types/paste'
 
 export function PasteForm() {
   const [content, setContent] = useState('')
